@@ -60,15 +60,14 @@ class Package(object):
         info(self.instance_name, "Starting merge")
 
         oldpath = enter_dir(self.srcpath)
-        
+
+        if hasattr(self,'workdir') and os.path.isdir(self.workdir):
+            shutil.rmtree(self.workdir)
 
         package_file = self.Fetch()
         if hasattr(self,'workdir'):
             if not isinstance(self.workdir,str):
                 self.workdir = self.workdir(package_file)
-
-            if os.path.isdir(self.workdir):
-                shutil.rmtree(self.workdir)
 
         workdir = self.Unpack(package_file)
 
