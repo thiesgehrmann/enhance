@@ -69,6 +69,7 @@ class Package(object):
             if not isinstance(self.workdir,str):
                 self.workdir = self.workdir(package_file)
 
+        print package_file
         workdir = self.Unpack(package_file)
 
         if workdir:
