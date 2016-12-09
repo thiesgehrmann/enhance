@@ -11,4 +11,4 @@ class bowtie2(MakePackage):
 
     build="make"
 
-    install="cp bowtie2-build bowtie2 bowtie2-inspect bowtie2-align %(prefix)s/bin"
+    install="cp bowtie2-build bowtie2 bowtie2-inspect bowtie2-align-l bowtie2-align-s %(prefix)s/bin"
