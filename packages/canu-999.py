@@ -18,9 +18,9 @@ class canu(MakePackage):
 
   def install(self):
     c="""pwd
-         mkdir -p %(prefix)/opt/canu
-         cp -r %(srcpath)s/* %(prefix)/opt/canu
-         ln -s %(prefix)s/opt/canu/Linux-amd64/bin/canu %(prefix)/bin
+         mkdir -p %(prefix)s/opt/canu
+         cp -r %(srcpath)s/canu/Linux-amd64/* %(prefix)s/opt/canu
+         ln -sf %(prefix)s/opt/canu/bin/canu %(prefix)s/bin
     """;
     for cmd in c.split('\n'):
       runCommand(self.fillVars(cmd))

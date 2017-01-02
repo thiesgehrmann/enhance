@@ -14,7 +14,10 @@ class busco(MakePackage):
 
   def install(self):
     c="""pwd
-         cp BUSCO.py BUSCO_plot.py %(prefix)s/bin
+         mkdir -p %(prefix)s/opt/busco
+         cp BUSCO.py BUSCO_plot.py %(prefix)s/opt/busco
+         echo -en "#!/bin/sh\\nexport PYTHONPATH=$PYTHONPATH\\n%(prefix)s/opt/busco/BUSCO.py \"\$@\"" > %(prefix)s/bin/BUSCO
+         chmod +x %(prefix)s/bin/BUSCO
     """;
     for cmd in c.split('\n'):
       runCommand(self.fillVars(cmd))
