@@ -21,6 +21,8 @@ class xorg(MakePackage):
                 'font/misc-cyrillic','font/misc-ethiopic','font/misc-meltho','font/misc-misc','font/mutt-misc',\
                 'font/schumacher-misc','font/screen-cyrillic','font/sony-misc','font/sun-misc',\
                 'font/winitzki-cyrillic','font/xfree86-type1','font/alias']
+    packages = ['app/bdftopcf']
+
 
     def fetch(self):
         runCommand("""
@@ -28,6 +30,20 @@ class xorg(MakePackage):
             cd xorg/
             git clone git://anongit.freedesktop.org/git/xorg/util/modular util/modular
             """)
+    patch="""--- util/modular/build.sh       2017-01-11 14:28:45.711029584 +0100
++++ /home/thiesgehrmann/build.sh        2017-01-11 14:20:11.839005813 +0100
+@@ -560,6 +560,11 @@
+        return 1
+     fi
+
++    # To remove the AC_GCC_BUILTIN thing that doesn't work...
++    if [ "$component" == "libXext" ]; then
++      sed -i.bak -e 's/AX_GCC_BUILTIN(\[__builtin_popcountl\])//' "$DIR/configure.ac"
++    fi
++
+     return 0
+ }
+"""
 
     workdir = "xorg"
 
@@ -36,10 +52,15 @@ class xorg(MakePackage):
         for package in self.packages:
             f.write(package + '\n')
         f.close()
+        f = open('build.sh.patch', 'w')
+        for line in self.patch.split('\n'): 
+          f.write(line + '\n')
+        f.close()
 
     modify_environ={'PREFIX':'%(prefix)s'}
     
     build = """
+            patch util/modular/build.sh < build.sh.patch
             util/modular/build.sh --modfile module_list --clone %(prefix)s
             """
     
