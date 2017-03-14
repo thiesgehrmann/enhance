@@ -18,7 +18,10 @@ class genemark_es(Package):
 
     build="""
         mkdir -p %(prefix)s/opt/genemark_es
+        sed -i.bak -e 's:#!/usr/bin/perl:#!/usr/bin/env perl:' `find | grep -e '.pl$'`
         cp -R * %(prefix)s/opt/genemark_es
+        env
+        cp gm_key_64 $HOME/.gm_key
         cd %(prefix)s/opt/genemark_es
         """
 
